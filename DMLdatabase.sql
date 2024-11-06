@@ -1,50 +1,71 @@
+/*------------------------------------------------*/
+/*       création de la table véhicules          */
+/*------------------------------------------------*/
+
 CREATE TABLE VEHICLES(
-licenseplate varchar(6) NOT NULL,
+licenseplate varchar(200) NOT NULL,
 make varchar(10) NOT NULL,
 model varchar(10) NOT NULL,
 yearr int CHECK(yearr>2000),
 color varchar(10),
 vin varchar(20),
-);										 /*création de la table véhicules*/
+);	
+GO
 
-
+/*------------------------------------------------*/
+/*		création de la table conducteur			  */
+/*------------------------------------------------*/
 
 CREATE TABLE DRIVERS(
 firstname varchar(200) NOT NULL,
 lastname varchar(200) NOT NULL,
-licensenumber int CHECK(licensenumber>0),
-phone int CHECK(phone>0000000),
-adress varchar(200),
+licensenumber varchar(200) NOT NULL,
+phone varchar(200)NOT NULL,
+adress varchar(200) NOT NULL,
 city varchar(200)NOT NULL,
 statee varchar(200) NOT NULL,
 zipcode varchar(200),
-);									 /*création de la table conducteur*/
+);	
+GO 
+
+/*------------------------------------------------*/
+/*      création de la table voyages		   	 */
+/*-----------------------------------------------*/
 
 CREATE TABLE TRIPS(
-vehicleid int CHECK(vehicleid>0),
-driverid int CHECK(vehicleid>0),
+vehicleid int,
+driverid int,
 startdate date,
 enddate date,
 startlocation varchar(200) NOT NULL,
 endlocation varchar(200) NOT NULL,
-distance int CHECK(vehicleid>0),
-);									 /*création de la table voyages*/
+distance int,
+); 
+GO		
+
+/*-----------------------------------------------*/
+/*      création de la table maintenance          */
+/*-----------------------------------------------*/
 
 CREATE TABLE Maintenance(
-vehicleid int CHECK(vehicleid>0),
+vehicleid int,
 maintenancedate date,
 descriptionn varchar(200) NOT NULL,
-cost int CHECK(vehicleid>0),
-);									/*création de la table maintenance*/
+cost int,
+);	
+GO
 
 
 /*ajout des insertions sur la table véhicules*/
 INSERT INTO VEHICLES VALUES('ABC123', 'toyota', 'corrolla', '2020', 'white', '1HGCM82633A004352');
 INSERT INTO VEHICLES VALUES('XYZ789', 'ford', 'fusion', '2018', 'blue', '2HGCM82633A004353');
 
+
+
 /*ajout des insertions sur la table conducteurs*/
-INSERT INTO DRIVERS VALUES('Michael', 'Smith', 'D1234567', '1234567890', '123 Main St', 'Anytown', 'CA', '12345');
+INSERT INTO DRIVERS VALUES('Michael','Smith', 'D1234567', '1234567890', '123 Main St', 'Anytown', 'CA', '12345');
 INSERT INTO DRIVERS VALUES('Sarah', 'Connor', 'D7654321', '0987654321', '456 Elm St', 'Otherville', 'NY', '54321');
+
 
 /*ajout des insertions sur la table voyages*/
 INSERT INTO TRIPS VALUES('1', '1', '2024-07-01', '2024-07-02', 'los Angeles', 'San Francisco', '380');
@@ -64,6 +85,8 @@ DELETE FROM VEHICLES WHERE licenseplate= 'ABC123';
 
 /*Insert one more record into the Trips table with the following details*/
 INSERT INTO TRIPS VALUES('2', '1', '2024-07-05', '2024-07-06', 'Boston', 'philadelphia', '300');
+
+
 
 /*Update the color of the second vehicle in the Vehicles table to "Red".*/ 
 UPDATE VEHICLES SET color= 'red' 
