@@ -141,13 +141,58 @@ SELECT
 GO
 
 
-/*--------------------------------------------------------------------------------------------------------------------------*/
+/* 10 ----------------------------------------------------------------------------------------------------------------------*/
 /*Display customers who have ordered all products. The resulting table should display the columns:  -----------------------*/
-/*customer code, company name, and telephone number.----------------------------------------------------------------------*/	
+/*customer code, company name, and telephone number.----------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------------------------------------------------*/
 
 
 
 
+SELECT CUSTOMERS.CUSTOMER_CODE, CUSTOMERS.COMPANY, CUSTOMERS.PHONE
+		FROM CUSTOMERS
+		Join ORDERS
+		ON CUSTOMERS.CUSTOMER_CODE = ORDERS.CUSTOMER_CODE
+		JOIN ORDER_DETAILS
+		ON ORDERS.ORDER_NUMBER = ORDER_DETAILS.ORDER_NUMBER
+		JOIN PRODUCTS
+		ON ORDER_DETAILS.PRODUCT_REF = PRODUCTS.PRODUCT_REF
+			GROUP BY 
+					CUSTOMERS.CUSTOMER_CODE, 
+					CUSTOMERS.COMPANY, 
+					CUSTOMERS.PHONE
+					HAVING 
+					COUNT(DISTINCT PRODUCTS.PRODUCT_REF) = 16;
+GO
 
 
+/* 11 ----------------------------------------------------------------------------------------------------------------------*/
+/*Display for each customer from France the number of orders they have placed. ------------------------------------------*/
+/*The resulting table should display the columns: customer code and number of orders.-----------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
+
+SELECT 
+    CUSTOMERS.CUSTOMER_CODE,
+    COUNT(ORDERS.ORDER_NUMBER) AS NUMBER_OF_ORDERS
+FROM 
+    CUSTOMERS
+JOIN 
+    ORDERS 
+    ON CUSTOMERS.CUSTOMER_CODE = ORDERS.CUSTOMER_CODE
+WHERE 
+    CUSTOMERS.COUNTRY LIKE '%FRANCE%'
+GROUP BY 
+    CUSTOMERS.CUSTOMER_CODE;
+
+/* 12 ----------------------------------------------------------------------------------------------------------------------*/
+/*	Display the number of orders placed in 1996, the number of orders placed in 1997, and the difference between these two numbers.*/
+/*	The resulting table should display the columns: orders in 1996, orders in 1997, and Difference.-----------------*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
+
+
+SELECT  
+    SUM(CASE WHEN YEAR(ORDER_DATE) = 1996 THEN 1 ELSE 0 END) AS NUMBER_OF_ORDERS_1996,
+    SUM(CASE WHEN YEAR(ORDER_DATE) = 1997 THEN 1 ELSE 0 END) AS NUMBER_OF_ORDERS_1997,
+SUM(CASE WHEN YEAR(ORDER_DATE) = 1996 THEN 1 ELSE 0 END) -
+    SUM(CASE WHEN YEAR(ORDER_DATE) = 1997 THEN 1 ELSE 0 END) AS DIFFERENCE_BETWEEN_1996_AND_1997
+FROM ORDERS;
